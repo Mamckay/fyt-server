@@ -7,7 +7,6 @@ const workoutSchema = new mongoose.Schema({
 })
 
 workoutSchema.set('timestamps', true);
-workoutSchema.index({ userId: 1, goal: 1 }, { unique: true });
 workoutSchema.set('toJSON', {
     virtuals: true,
     transform: (doc, result) => {

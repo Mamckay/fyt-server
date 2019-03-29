@@ -36,7 +36,7 @@ router.get('/user/endurance', jwtAuth, (req, res, next) => {
         .sort({ createdAt: 'desc' })
         .then(goals => {
             const thing = goals.map(goal => {
-                if (goal.goal.Category === 'endurance') {
+                if (goal.goal.Category === 'Endurance') {
                     return goal;
                 }
             })
@@ -52,7 +52,7 @@ router.get('/user/strength', jwtAuth, (req, res, next) => {
         .sort({ createdAt: 'desc' })
         .then(goals => {
             const thing = goals.map(goal => {
-                if (goal.goal.Category === 'strength') {
+                if (goal.goal.Category === 'Strength') {
                     return goal;
                 }
             })
@@ -68,7 +68,7 @@ router.get('/user/balance', jwtAuth, (req, res, next) => {
         .sort({ createdAt: 'desc' })
         .then(goals => {
             const thing = goals.map(goal => {
-                if (goal.goal.Category === 'balance') {
+                if (goal.goal.Category === 'Balance') {
                     return goal;
                 }
             })
@@ -80,25 +80,26 @@ router.get('/user/balance', jwtAuth, (req, res, next) => {
 });
 
 router.post('/', jwtAuth, (req, res, next) => {
+    console.log(req.body);
     const newGoal = {};
-    const { goalBody } = req.body;
-    if (goalBody.Category) {
-        newGoal.Category = goalBody.Category;
+    const { Category, Exercise, Reps, Distance, Time, Weight } = req.body;
+    if (Category) {
+        newGoal.Category = Category;
     }
-    if (goalBody.Exercise) {
-        newGoal.Exercise = goalBody.Exercise;
+    if (Exercise) {
+        newGoal.Exercise = Exercise;
     }
-    if (goalBody.Reps) {
-        newGoal.Reps = goalBody.Reps;
+    if (Reps) {
+        newGoal.Reps = Reps;
     }
-    if (goalBody.Weight) {
-        newGoal.Weight = goalBody.Weight;
+    if (Weight) {
+        newGoal.Weight = Weight;
     }
-    if (goalBody.Distance) {
-        newGoal.Distance = goalBody.Distance;
+    if (Distance) {
+        newGoal.Distance = Distance;
     }
-    if (goalBody.Time) {
-        newGoal.Time = goalBody.Time;
+    if (Time) {
+        newGoal.Time = Time;
     }
 
     Goal.create({ userId: req.user.id, goal: newGoal })

@@ -81,24 +81,24 @@ router.get('/user/balance', jwtAuth, (req, res, next) => {
 
 router.post('/', jwtAuth, (req, res, next) => {
     const newWorkout = {};
-    const { workoutBody } = req.body;
-    if (workoutBody.Category) {
-        newWorkout.Category = workoutBody.Category;
+    const { Category, Exercise, Reps, Weight, Distance, Time } = req.body;
+    if (Category) {
+        newWorkout.Category = Category;
     }
-    if (workoutBody.Exercise) {
-        newWorkout.Exercise = workoutBody.Exercise;
+    if (Exercise) {
+        newWorkout.Exercise = Exercise;
     }
-    if (workoutBody.Reps) {
-        newWorkout.Reps = workoutBody.Reps;
+    if (Reps) {
+        newWorkout.Reps = Reps;
     }
-    if (workoutBody.Weight) {
-        newWorkout.Weight = workoutBody.Weight;
+    if (Weight) {
+        newWorkout.Weight = Weight;
     }
-    if (workoutBody.Distance) {
-        newWorkout.Distance = workoutBody.Distance;
+    if (Distance) {
+        newWorkout.Distance = Distance;
     }
-    if (workoutBody.Time) {
-        newWorkout.Time = workoutBody.Time;
+    if (Time) {
+        newWorkout.Time = Time;
     }
 
     Workout.create({ userId: req.user.id, workout: newWorkout })
