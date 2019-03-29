@@ -10,6 +10,8 @@ const cors = require('cors');
 // called router (from ./users and ./auth) have different names
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const goalRouter = require('./routes/goals');
+const workoutRouter = require('./routes/workouts');
 
 mongoose.Promise = global.Promise;
 
@@ -34,11 +36,10 @@ passport.use(jwtStrategy);
 
 app.use('/users/', usersRouter);
 app.use('/auth/', authRouter);
+app.use('/goal', goalRouter);
+app.use('/workout', workoutRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
-
-
-
 
 app.use('*', (req, res) => {
   return res.status(404).json({ message: 'Not Found' });
