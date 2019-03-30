@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const { User } = require('./models');
+const Stat = require('../models/stats');
 
 const router = express.Router();
 
@@ -122,6 +123,13 @@ router.post('/', jsonParser, (req, res) => {
       });
     })
     .then(user => {
+      Stat.create({ userId: user._id, weight: 0, time: 0, distance: 0, reps: 0, goals: 0, workouts: 0 })
+        .then(() => {
+          console.log('success');
+        })
+        .catch(err => {
+          console.log(err);
+        })
       return res.status(201).json(user.serialize());
     })
     .catch(err => {

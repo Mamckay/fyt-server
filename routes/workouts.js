@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const router = express.Router();
 const Workout = require('../models/workout')
+const Stat = require('../models/stats');
 /* JWT Auth */
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
@@ -103,6 +104,33 @@ router.post('/', jwtAuth, (req, res, next) => {
 
     Workout.create({ userId: req.user.id, workout: newWorkout })
         .then(response => {
+            Stat.find({ userId: req.user.id })
+                .then(result => {
+                    const updateStats = {};
+                    const tempStats = Object.keys(newWorkout);
+                    let tempNumbers = JSON.stringify(Object.values(result));
+                    tempNumbers = JSON.parse(tempNumbers);
+                    tempStats.map((singleStat, index) => {
+                        if (singleStat === 'Reps' || singleStat === 'Time' || singleStat === 'Distance' || singleStat === 'Weight') {
+                            const lowerStat = singleStat.toLowerCase();
+                            updateStats[lowerStat] = Number(tempNumbers[0][lowerStat]) + Number(newWorkout[singleStat]);
+                        }
+                    })
+                    return updateStats;
+                })
+                .then(dataSet => {
+                    Stat.findOneAndUpdate({ userId: req.user.id }, dataSet, { new: true })
+                        .then(response => {
+                            console.log(response);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+
             res.json(response);
         })
         .catch(err => {
