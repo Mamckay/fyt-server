@@ -16,14 +16,14 @@ router.get('/', jwtAuth, (req, res, next) => {
         })
 })
 
-
 router.put('/', jwtAuth, (req, res, next) => {
-
-    const { incomingWorkout } = req.body;
-
-    Stat.findOneAndUpdate({ userId: req.user.id })
+    Stat.find({ userId: req.user.id })
         .then(result => {
-            res.json(result);
+            console.log(result[0].goals);
+            Stat.findOneAndUpdate({ userId: req.user.id }, { goals: result[0].goals + 1 }, { new: true })
+                .then(result => {
+                    res.sendStatus(200);
+                })
         })
 })
 

@@ -112,12 +112,31 @@ router.post('/', jwtAuth, (req, res, next) => {
 });
 
 router.delete('/', jwtAuth, (req, res, next) => {
-    const { goalBody } = req.body;
+    const { Category, Exercise, Reps, Weight, Distance, Time } = req.body;
+
     const removeGoal = {
-        userId: req.user.id,
-        goal: goalBody
     }
-    Goal.deleteOne(removeGoal)
+
+    if (Category) {
+        removeGoal.Category = Category;
+    }
+    if (Exercise) {
+        removeGoal.Exercise = Exercise;
+    }
+    if (Reps) {
+        removeGoal.Reps = Reps;
+    }
+    if (Weight) {
+        removeGoal.Weight = Weight;
+    }
+    if (Distance) {
+        removeGoal.Distance = Distance;
+    }
+    if (Time) {
+        removeGoal.Time = Time;
+    }
+
+    Goal.deleteOne({ userId: req.user.id, goal: removeGoal })
         .then(response => {
             res.json(response);
         })
